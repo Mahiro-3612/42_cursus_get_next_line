@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:08:18 by codespace         #+#    #+#             */
-/*   Updated: 2025/08/13 16:30:35 by codespace        ###   ########.fr       */
+/*   Updated: 2025/08/14 12:08:05 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int main(void)
 	int fd = open("test.txt", O_RDONLY);
 	if (fd == -1)
 		return (1);
+	// int	fd = 0;
 	char *line = get_next_line(fd);
 	while (line)
 	{
