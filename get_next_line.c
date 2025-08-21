@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:31:42 by codespace         #+#    #+#             */
-/*   Updated: 2025/08/17 09:09:35 by codespace        ###   ########.fr       */
+/*   Updated: 2025/08/21 13:47:56 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,32 +14,34 @@
 
 char	*get_next_line(int fd)
 {
-	char	*buf;
 	static char	*next_buf = NULL;
-	char	*line;
+	char		*buf;
+	ssize_t		bytes_read;
+	char		*line;
 
 	if (!next_buf)
 	{
-		buf = read_until_n(fd, BUFFER_SIZE);
-		printf("buf is %s\n", buf);
+		buf = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
 		if (!buf)
 			return (NULL);
+		bytes_read = read(fd, buf, BUFFER_SIZE);
+		if (bytes_read <= 0)
+		{
+			free(buf);
+			return (NULL);
+		}
 	}
 	else
 	{
-		buf = ft_calloc(BUFFER_SIZE + 2, sizeof(char));
-		ft_strlcpy(buf, next_buf, BUFFER_SIZE + 2);
+		buf = ft_strdup(next_buf);
 		free(next_buf);
-		printf("buf is %s\n", buf);
 	}
-	next_buf = read_until_n(fd, BUFFER_SIZE + 1);
-	printf("next_buf is %s\n", next_buf);
-	if (!next_buf)
+	line = get_until_newline(buf, &next_buf, BUFFER_SIZE);
+	free(buf);
+	if (!line)
 	{
-		free(buf);
+		free(next_buf);
 		return (NULL);
 	}
-	line = ft_strdup(buf);
-	free(buf);
 	return (line);
 }

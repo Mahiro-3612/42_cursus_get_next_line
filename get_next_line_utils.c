@@ -6,11 +6,21 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:31:44 by codespace         #+#    #+#             */
-/*   Updated: 2025/08/17 09:08:15 by codespace        ###   ########.fr       */
+/*   Updated: 2025/08/21 13:47:00 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+size_t	ft_strlen(const char *s)
+{
+	size_t	len;
+
+	len = 0;
+	while (s[len])
+		len++;
+	return (len);
+}
 
 void	*ft_calloc(size_t nmemb, size_t size)
 {
@@ -61,48 +71,43 @@ char	*ft_strdup(const char *s)
 	return (copy);
 }
 
-char	*read_until_n(int fd, size_t size)
+char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	ssize_t	read_bytes;
-	ssize_t	i;
-	size_t	is_valid;
-	char	*tmp;
-	char	*buf;
+	char	*dest;
+	size_t	max_len;
 
-	tmp = ft_calloc(size, sizeof(char));
-	if (!tmp)
+	if (ft_strlen(s) <= start)
+		return (ft_strdup(""));
+	max_len = ft_strlen(s) - start;
+	if (max_len < len)
+		len = max_len;
+	dest = ft_calloc(len + 1, sizeof(char));
+	if (!dest)
 		return (NULL);
-	read_bytes = read(fd, tmp, size);
-	if (read_bytes <= 0)
-	{
-		free(tmp);
-		return (NULL);
-	}
+	ft_strlcpy(dest, s + start, len + 1);
+	return (dest);
+}
+
+char	*get_until_newline(char *buf, char **next_buf, size_t size)
+{
+	size_t	i;
+	char	*line;
+
 	i = 0;
-	while (i < read_bytes && tmp[i] != '\n')
+	while (buf[i] != '\n' && i < size)
 		i++;
-	is_valid = !(i == read_bytes);
-	if (is_valid)
+	if (i == size)
 	{
-		buf = ft_calloc(i + 1, sizeof(char));
-		if (!buf)
-		{
-			free(tmp);
-			return (NULL);
-		}
-		ft_strlcpy(buf, tmp, i + 1);
+		*next_buf = NULL;
+		line = ft_strdup(buf);
 	}
 	else
 	{
-		buf = ft_calloc(i + 2, sizeof(char));
-		if (!buf)
-		{
-			free(tmp);
+		*next_buf = ft_substr(buf, i + 1, size);
+		line = ft_calloc(i + 2, sizeof(char));
+		if (!line)
 			return (NULL);
-		}
-		ft_strlcpy(buf, tmp, i + 1);
-		buf[i] = '\n';
-		buf[i + 1] = '\0';
+		ft_strlcpy(line, buf, i + 2);
 	}
-	return (buf);
+	return (line);
 }

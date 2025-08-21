@@ -6,13 +6,13 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:08:18 by codespace         #+#    #+#             */
-/*   Updated: 2025/08/14 12:08:05 by codespace        ###   ########.fr       */
+/*   Updated: 2025/08/21 13:47:15 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int main(void)
+int	main(void)
 {
 	int fd = open("test.txt", O_RDONLY);
 	if (fd == -1)
