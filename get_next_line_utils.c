@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:31:44 by codespace         #+#    #+#             */
-/*   Updated: 2025/08/22 09:19:48 by codespace        ###   ########.fr       */
+/*   Updated: 2025/08/22 10:06:55 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,24 +71,35 @@ char	*ft_strdup(const char *s)
 	return (copy);
 }
 
-char	*ft_substr(char const *s, unsigned int start, size_t len)
+char	*ft_substr_with_free(char *s, unsigned int start, size_t len)
 {
 	char	*dest;
 	size_t	max_len;
 
 	if (ft_strlen(s) <= start)
-		return (ft_strdup(""));
+	{
+		dest = ft_calloc(1, sizeof(char));
+		if (!dest)
+		{
+			free(s);
+			return (NULL);
+		}
+		return (dest);
+	}
 	max_len = ft_strlen(s) - start;
 	if (max_len < len)
 		len = max_len;
 	dest = ft_calloc(len + 1, sizeof(char));
 	if (!dest)
+	{
+		free(s);
 		return (NULL);
+	}
 	ft_strlcpy(dest, s + start, len + 1);
 	return (dest);
 }
 
-char	*ft_strjoin_with_free(char *s1, char **s2)
+char	*ft_strjoin_and_free(char *s1, char **s2)
 {
 	size_t	s1_len;
 	size_t	s2_len;
@@ -98,7 +109,12 @@ char	*ft_strjoin_with_free(char *s1, char **s2)
 	s2_len = ft_strlen(*s2);
 	dest = ft_calloc(s1_len + s2_len + 1, sizeof(char));
 	if (!dest)
+	{
+		free(s1);
+		free(*s2);
+		*s2 = NULL;
 		return (NULL);
+	}
 	ft_strlcpy(dest, s1, s1_len + 1);
 	ft_strlcpy(dest + s1_len, *s2, s2_len + 1);
 	free(s1);
