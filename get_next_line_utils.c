@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:31:44 by codespace         #+#    #+#             */
-/*   Updated: 2025/08/22 08:06:40 by codespace        ###   ########.fr       */
+/*   Updated: 2025/08/22 09:19:48 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,20 +88,21 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	return (dest);
 }
 
-char	*ft_strjoin_with_free(char *s1, char *s2)
+char	*ft_strjoin_with_free(char *s1, char **s2)
 {
 	size_t	s1_len;
 	size_t	s2_len;
 	char	*dest;
 
 	s1_len = ft_strlen(s1);
-	s2_len = ft_strlen(s2);
+	s2_len = ft_strlen(*s2);
 	dest = ft_calloc(s1_len + s2_len + 1, sizeof(char));
 	if (!dest)
 		return (NULL);
 	ft_strlcpy(dest, s1, s1_len + 1);
-	ft_strlcpy(dest + s1_len, s2, s2_len + 1);
+	ft_strlcpy(dest + s1_len, *s2, s2_len + 1);
 	free(s1);
-	free(s2);
+	free(*s2);
+	*s2 = NULL;
 	return (dest);
 }
