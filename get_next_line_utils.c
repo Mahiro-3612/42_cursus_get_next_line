@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:31:44 by codespace         #+#    #+#             */
-/*   Updated: 2025/08/31 04:40:35 by codespace        ###   ########.fr       */
+/*   Updated: 2025/08/31 04:46:49 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,7 +155,6 @@ void	ft_clear(t_list **list, char **content)
     while (current != NULL)
     {
         next_node = current->next;
-		free(current->content);
         free(current);
         current = next_node;
     }
