@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:31:44 by codespace         #+#    #+#             */
-/*   Updated: 2025/08/31 07:13:24 by codespace        ###   ########.fr       */
+/*   Updated: 2025/08/31 08:43:42 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,44 +102,17 @@ char	*ft_strjoin_and_free(char **s1, char *s2)
 	return (dest);
 }
 
-ssize_t	ft_lstadd_back(int fd, t_list **list, char **content)
+void	ft_lstadd_back(t_list **list, char **content)
 {
 	t_list	*new;
 	t_list	*last;
-	ssize_t	bytes_read;
 
 	if (!*content)
-	{
-		*content = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
-		if (!*content)
-		{
-			ft_clear(list, content);
-			return (-1);
-		}
-		bytes_read = read(fd, *content, BUFFER_SIZE);
-		if (bytes_read <= 0)
-		{
-			if (bytes_read < 0)
-				ft_clear(list, content);
-			else
-			{
-				free(*content);
-				*content = NULL;
-			}
-			return (bytes_read);
-		}
-	}
-	else
-		bytes_read = 1;
+		return ;
 	new = ft_calloc(1, sizeof(t_list));
 	if (!new)
-	{
-		ft_clear(list, content);
-		return (-1);
-	}
+		return ;
 	ft_strlcpy(new->content, *content, ft_strlen(*content) + 1);
-	free(*content);
-	*content = NULL;
 	new->next = NULL;
 	if (!*list)
 		*list = new;
@@ -150,7 +123,6 @@ ssize_t	ft_lstadd_back(int fd, t_list **list, char **content)
 			last = last->next;
 		last->next = new;
 	}
-	return (bytes_read);
 }
 
 void	ft_clear(t_list **list, char **content)
@@ -196,7 +168,10 @@ char	*get_until_newline(t_list **list, char **next_buf)
 	i = 0;
 	while (buf[i] != '\n' && buf[i])
 		i++;
-	line = ft_substr(buf, 0, i + 1);
+	if (i == 0 && buf[0] == '\0')
+		line = NULL;
+	else
+		line = ft_substr(buf, 0, i + 1);
 	if (buf[i])
 		*next_buf = ft_substr(buf, i + 1, ft_strlen(buf) - (i + 1));
 	else
