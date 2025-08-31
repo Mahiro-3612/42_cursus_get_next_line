@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:31:42 by codespace         #+#    #+#             */
-/*   Updated: 2025/08/31 06:33:07 by codespace        ###   ########.fr       */
+/*   Updated: 2025/08/31 07:13:17 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*get_next_line(int fd)
 			ft_clear(&list, &next_buf);
 		return (NULL);
 	}
-	while (!has_newline(list) && bytes_read > 0)
+	while (!has_newline(list, bytes_read) && bytes_read > 0)
 	{
 		bytes_read = ft_lstadd_back(fd, &list, &next_buf);
 		if (!list)
@@ -37,6 +37,6 @@ char	*get_next_line(int fd)
 			return (NULL);
 		}
 	}
-	line = get_until_newline(list, &next_buf);
+	line = get_until_newline(&list, &next_buf);
 	return (line);
 }

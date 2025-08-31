@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:31:44 by codespace         #+#    #+#             */
-/*   Updated: 2025/08/31 06:33:08 by codespace        ###   ########.fr       */
+/*   Updated: 2025/08/31 07:13:24 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ char	*ft_substr(char *s, unsigned int start, size_t len)
 	size_t	max_len;
 
 	if (!len)
-		return (0);
+		return (NULL);
 	if (ft_strlen(s) <= start)
 	{
 		dest = ft_calloc(1, sizeof(char));
@@ -175,7 +175,7 @@ void	ft_clear(t_list **list, char **content)
     *list = NULL;
 }
 
-char	*get_until_newline(t_list *list, char **next_buf)
+char	*get_until_newline(t_list **list, char **next_buf)
 {
 	char	*buf;
 	t_list	*current;
@@ -184,15 +184,15 @@ char	*get_until_newline(t_list *list, char **next_buf)
 
 	buf = NULL;
 	line = NULL;
-	if (!list)
+	if (!list || !*list)
 		return (NULL);
-	current = list;
+	current = *list;
 	while (current != NULL)
 	{
 		buf = ft_strjoin_and_free(&buf, current->content);
 		current = current->next;
 	}
-	ft_clear(&list, next_buf);
+	ft_clear(list, next_buf);
 	i = 0;
 	while (buf[i] != '\n' && buf[i])
 		i++;
@@ -205,18 +205,18 @@ char	*get_until_newline(t_list *list, char **next_buf)
 	return (line);
 }
 
-size_t	has_newline(t_list *list)
+size_t	has_newline(t_list *list, ssize_t bytes_read)
 {
 	t_list	*current;
-	size_t	i;
+	ssize_t	i;
 
 	current = list;
 	while (current != NULL)
 	{
 		i = 0;
-		while ((current->content)[i] && (current->content)[i] != '\n')
+		while ((current->content)[i] && (current->content)[i] != '\n' && i < bytes_read)
 			i++;
-		if ((current->content)[i] == '\n')
+		if (i < bytes_read && (current->content)[i] == '\n')
 			return (1);
 		current = current->next;
 	}
