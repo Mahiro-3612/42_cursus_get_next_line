@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:31:44 by codespace         #+#    #+#             */
-/*   Updated: 2025/08/31 06:03:23 by codespace        ###   ########.fr       */
+/*   Updated: 2025/08/31 06:33:08 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ char	*ft_substr(char *s, unsigned int start, size_t len)
 	char	*dest;
 	size_t	max_len;
 
+	if (!len)
+		return (0);
 	if (ft_strlen(s) <= start)
 	{
 		dest = ft_calloc(1, sizeof(char));
@@ -182,6 +184,8 @@ char	*get_until_newline(t_list *list, char **next_buf)
 
 	buf = NULL;
 	line = NULL;
+	if (!list)
+		return (NULL);
 	current = list;
 	while (current != NULL)
 	{
