@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:31:44 by codespace         #+#    #+#             */
-/*   Updated: 2025/08/31 05:54:25 by codespace        ###   ########.fr       */
+/*   Updated: 2025/08/31 06:03:23 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,13 @@ ssize_t	ft_lstadd_back(int fd, t_list **list, char **content)
 		bytes_read = read(fd, *content, BUFFER_SIZE);
 		if (bytes_read <= 0)
 		{
-			ft_clear(list, content);
+			if (bytes_read < 0)
+				ft_clear(list, content);
+			else
+			{
+				free(*content);
+				*content = NULL;
+			}
 			return (bytes_read);
 		}
 	}
