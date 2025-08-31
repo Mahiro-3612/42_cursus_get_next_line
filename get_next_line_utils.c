@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:31:44 by codespace         #+#    #+#             */
-/*   Updated: 2025/08/31 08:43:42 by codespace        ###   ########.fr       */
+/*   Updated: 2025/08/31 09:05:36 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ void	ft_lstadd_back(t_list **list, char **content)
 	t_list	*new;
 	t_list	*last;
 
-	if (!*content)
+	if (!content || !*content)
 		return ;
 	new = ft_calloc(1, sizeof(t_list));
 	if (!new)
@@ -162,6 +162,11 @@ char	*get_until_newline(t_list **list, char **next_buf)
 	while (current != NULL)
 	{
 		buf = ft_strjoin_and_free(&buf, current->content);
+		if (!buf)
+		{
+			ft_clear(list, next_buf);
+			return (NULL);
+		}
 		current = current->next;
 	}
 	ft_clear(list, next_buf);
