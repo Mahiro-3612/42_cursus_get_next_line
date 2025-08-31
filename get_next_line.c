@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:31:42 by codespace         #+#    #+#             */
-/*   Updated: 2025/08/31 08:51:27 by codespace        ###   ########.fr       */
+/*   Updated: 2025/08/31 09:00:32 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ char	*get_next_line(int fd)
 			ft_clear(NULL, &buf);
 			return(NULL) ;
 		}
-		else
+		if (bytes_read > 0)
 			ft_lstadd_back(&list, &buf);
 		ft_clear(NULL, &buf);
 	}
