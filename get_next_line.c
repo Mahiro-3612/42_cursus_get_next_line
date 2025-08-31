@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:31:42 by codespace         #+#    #+#             */
-/*   Updated: 2025/08/31 12:40:40 by codespace        ###   ########.fr       */
+/*   Updated: 2025/08/31 12:54:40 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void	ft_lstadd_back_and_free(t_list **list, char **content)
 		return ;
 	new = ft_calloc(1, sizeof(t_list));
 	if (!new)
-		return(ft_clear(list, content));
+		return (ft_clear(list, content));
 	ft_strlcpy(new->content, *content, ft_strlen(*content) + 1);
 	new->next = NULL;
 	if (!*list)
@@ -33,7 +33,7 @@ static void	ft_lstadd_back_and_free(t_list **list, char **content)
 			last = last->next;
 		last->next = new;
 	}
-	ft_clear(NULL, &content);
+	ft_clear(NULL, content);
 }
 
 static size_t	has_newline(t_list *list, ssize_t bytes_read)
@@ -63,9 +63,6 @@ static char	*get_buf(t_list **list)
 	size_t	len;
 	size_t	offset;
 
-	buf = NULL;
-	if (!list || !*list)
-		return (NULL);
 	current = *list;
 	len = 0;
 	while (current)
@@ -95,8 +92,6 @@ char	*get_until_newline(t_list **list, char **next_buf)
 	size_t	i;
 	size_t	len;
 
-	buf = NULL;
-	line = NULL;
 	if (!list || !*list)
 		return (NULL);
 	buf = get_buf(list);
@@ -106,22 +101,16 @@ char	*get_until_newline(t_list **list, char **next_buf)
 	i = 0;
 	while (buf[i] != '\n' && buf[i])
 		i++;
-	if (i == 0 && buf[0] == '\0')
-		line = NULL;
-	else
+	line = NULL;
+	if (i != 0 || buf[0] != '\0')
 		line = ft_substr(buf, 0, i + 1);
 	len = ft_strlen(buf);
 	if (i + 1 < len)
 	{
 		*next_buf = ft_substr(buf, i + 1, len - (i + 1));
 		if (!*next_buf)
-		{
-			free(line);
-			line = NULL;
-		}
+			ft_clear(NULL, &line);
 	}
-	else
-		*next_buf = NULL;
 	return (free(buf), line);
 }
 
