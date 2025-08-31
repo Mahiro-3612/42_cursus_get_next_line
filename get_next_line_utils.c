@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:31:44 by codespace         #+#    #+#             */
-/*   Updated: 2025/08/31 09:05:36 by codespace        ###   ########.fr       */
+/*   Updated: 2025/08/31 09:44:11 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,6 @@ char	*ft_substr(char *s, unsigned int start, size_t len)
 	char	*dest;
 	size_t	max_len;
 
-	if (!len)
-		return (NULL);
 	if (ft_strlen(s) <= start)
 	{
 		dest = ft_calloc(1, sizeof(char));
@@ -111,7 +109,10 @@ void	ft_lstadd_back(t_list **list, char **content)
 		return ;
 	new = ft_calloc(1, sizeof(t_list));
 	if (!new)
+	{
+		ft_clear(list, content);
 		return ;
+	}
 	ft_strlcpy(new->content, *content, ft_strlen(*content) + 1);
 	new->next = NULL;
 	if (!*list)
@@ -161,6 +162,7 @@ char	*get_until_newline(t_list **list, char **next_buf)
 	current = *list;
 	while (current != NULL)
 	{
+		// printf("current->content: [%s]\n", current->content);
 		buf = ft_strjoin_and_free(&buf, current->content);
 		if (!buf)
 		{
@@ -170,6 +172,7 @@ char	*get_until_newline(t_list **list, char **next_buf)
 		current = current->next;
 	}
 	ft_clear(list, next_buf);
+	// printf("buf: [%s]\n", buf);
 	i = 0;
 	while (buf[i] != '\n' && buf[i])
 		i++;
@@ -177,8 +180,15 @@ char	*get_until_newline(t_list **list, char **next_buf)
 		line = NULL;
 	else
 		line = ft_substr(buf, 0, i + 1);
-	if (buf[i])
+	if (i + 1 < ft_strlen(buf))
+	{
 		*next_buf = ft_substr(buf, i + 1, ft_strlen(buf) - (i + 1));
+		if (!*next_buf)
+		{
+			free(line);
+			line = NULL;
+		}
+	}
 	else
 		*next_buf = NULL;
 	free(buf);

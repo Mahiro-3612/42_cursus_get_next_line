@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:31:42 by codespace         #+#    #+#             */
-/*   Updated: 2025/08/31 09:00:32 by codespace        ###   ########.fr       */
+/*   Updated: 2025/08/31 09:44:51 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,24 +25,40 @@ char	*get_next_line(int fd)
 	{
 		ft_lstadd_back(&list, &next_buf);
 		ft_clear(NULL, &next_buf);
+		if (!list)
+			return (NULL);
 	}
 	bytes_read = 1;
 	while (!has_newline(list, bytes_read) && bytes_read > 0)
 	{
 		buf = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
 		if (!buf)
-			break ;
+		{
+			ft_clear(&list, &next_buf);
+			return (NULL);
+		}
 		bytes_read = read(fd, buf, BUFFER_SIZE);
 		if (bytes_read < 0)
 		{
 			ft_clear(&list, &next_buf);
 			ft_clear(NULL, &buf);
-			return(NULL) ;
+			return (NULL);
 		}
 		if (bytes_read > 0)
+		{
 			ft_lstadd_back(&list, &buf);
+			if (!list)
+			{
+				ft_clear(NULL, &buf);
+				return (NULL);
+			}
+		}
 		ft_clear(NULL, &buf);
 	}
 	line = get_until_newline(&list, &next_buf);
+	if (!line)
+		ft_clear(&list, &next_buf);
+	// printf("line: [%s]\n", line);
+	// printf("next_buf: [%s]\n", next_buf);
 	return (line);
 }

@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 16:08:18 by codespace         #+#    #+#             */
-/*   Updated: 2025/08/31 09:02:15 by codespace        ###   ########.fr       */
+/*   Updated: 2025/08/31 09:23:26 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,21 +17,21 @@ int	main(void)
 	// int	fd = 0;
 	// int fd = open("tests/normal_test.txt", O_RDONLY);
 	// int fd = open("tests/only_nl_test.txt", O_RDONLY);
-	int fd = open("tests/1char_test.txt", O_RDONLY);
+	// int fd = open("tests/1char_test.txt", O_RDONLY);
 	// int fd = open("tests/empty.txt", O_RDONLY);
+	// int fd = open("tests/multiple_nl.txt", O_RDONLY);
+	int fd = open("tests/one_line_no_new_line.txt", O_RDONLY);
 	if (fd == -1)
 		return (1);
 	int count = 0;
 	char *line = get_next_line(fd);
-	while (line && count < 20)
+	while (count < 10)
 	{
 		printf("[%s] \n", line);
 		free(line);
 		line = get_next_line(fd);
 		count++;
 	}
-	if (line == NULL)
-		printf("[NULL] \n");
 	close(fd);
 	return (0);
 }
