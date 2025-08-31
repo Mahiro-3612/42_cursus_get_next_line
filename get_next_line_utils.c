@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:31:44 by codespace         #+#    #+#             */
-/*   Updated: 2025/08/31 09:44:11 by codespace        ###   ########.fr       */
+/*   Updated: 2025/08/31 10:57:26 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,38 @@ char	*ft_strjoin_and_free(char **s1, char *s2)
 	return (dest);
 }
 
+static char	*get_buf(t_list **list)
+{
+	char	*buf;
+	t_list	*current;
+	size_t	len;
+	size_t	offset;
+
+	buf = NULL;
+	if (!list || !*list)
+		return (NULL);
+	current = *list;
+	len = 0;
+	while (current)
+	{
+		len += ft_strlen(current->content);
+		current = current->next;
+	}
+	buf = ft_calloc(len + 1, sizeof(char));
+	if (!buf)
+		return (NULL);
+	current = *list;
+	offset = 0;
+	while (current)
+	{
+		len = ft_strlen(current->content);
+		ft_strlcpy(buf + offset, current->content, len + 1);
+		offset += len;
+		current = current->next;
+	}
+	return (buf);
+}
+
 void	ft_lstadd_back(t_list **list, char **content)
 {
 	t_list	*new;
@@ -151,28 +183,21 @@ void	ft_clear(t_list **list, char **content)
 char	*get_until_newline(t_list **list, char **next_buf)
 {
 	char	*buf;
-	t_list	*current;
 	char	*line;
 	size_t	i;
+	size_t	len;
 
 	buf = NULL;
 	line = NULL;
 	if (!list || !*list)
 		return (NULL);
-	current = *list;
-	while (current != NULL)
+	buf = get_buf(list);
+	if (!buf)
 	{
-		// printf("current->content: [%s]\n", current->content);
-		buf = ft_strjoin_and_free(&buf, current->content);
-		if (!buf)
-		{
-			ft_clear(list, next_buf);
-			return (NULL);
-		}
-		current = current->next;
+		ft_clear(list, next_buf);
+		return (NULL);
 	}
 	ft_clear(list, next_buf);
-	// printf("buf: [%s]\n", buf);
 	i = 0;
 	while (buf[i] != '\n' && buf[i])
 		i++;
@@ -180,9 +205,10 @@ char	*get_until_newline(t_list **list, char **next_buf)
 		line = NULL;
 	else
 		line = ft_substr(buf, 0, i + 1);
-	if (i + 1 < ft_strlen(buf))
+	len = ft_strlen(buf);
+	if (i + 1 < len)
 	{
-		*next_buf = ft_substr(buf, i + 1, ft_strlen(buf) - (i + 1));
+		*next_buf = ft_substr(buf, i + 1, len - (i + 1));
 		if (!*next_buf)
 		{
 			free(line);
