@@ -6,7 +6,7 @@
 /*   By: msakurai <msakurai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:31:42 by codespace         #+#    #+#             */
-/*   Updated: 2025/09/07 16:19:18 by msakurai         ###   ########.fr       */
+/*   Updated: 2025/09/07 16:26:44 by msakurai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,7 @@ void	ft_lstadd_back(t_list **list, char **content)
 		return ;
 	new = ft_calloc(1, sizeof(t_list));
 	if (!new)
-	{
-		ft_clear(list, content);
-		return ;
-	}
+		return (ft_clear(list, content));
 	ft_strlcpy(new->content, *content, ft_strlen(*content) + 1);
 	new->next = NULL;
 	if (!*list)
@@ -101,10 +98,7 @@ char	*get_until_newline(t_list **list, char **next_buf)
 		return (NULL);
 	buf = get_buf(list);
 	if (!buf)
-	{
-		ft_clear(list, next_buf);
-		return (NULL);
-	}
+		return (ft_clear(list, next_buf), NULL);
 	ft_clear(list, next_buf);
 	i = 0;
 	while (buf[i] != '\n' && buf[i])
@@ -125,8 +119,7 @@ char	*get_until_newline(t_list **list, char **next_buf)
 	}
 	else
 		*next_buf = NULL;
-	free(buf);
-	return (line);
+	return (free(buf), line);
 }
 
 char	*get_next_line(int fd)
@@ -150,25 +143,15 @@ char	*get_next_line(int fd)
 	{
 		buf = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
 		if (!buf)
-		{
-			ft_clear(&list, &next_buf);
-			return (NULL);
-		}
+			return (ft_clear(&list, &next_buf), NULL);
 		bytes_read = read(fd, buf, BUFFER_SIZE);
 		if (bytes_read < 0)
-		{
-			ft_clear(&list, &next_buf);
-			ft_clear(NULL, &buf);
-			return (NULL);
-		}
+			return (ft_clear(&list, &next_buf), ft_clear(NULL, &buf), NULL);
 		if (bytes_read > 0)
 		{
 			ft_lstadd_back(&list, &buf);
 			if (!list)
-			{
-				ft_clear(NULL, &buf);
-				return (NULL);
-			}
+				return (ft_clear(NULL, &buf), NULL);
 		}
 		ft_clear(NULL, &buf);
 	}

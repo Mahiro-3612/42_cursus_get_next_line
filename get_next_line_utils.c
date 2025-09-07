@@ -6,7 +6,7 @@
 /*   By: msakurai <msakurai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:31:44 by codespace         #+#    #+#             */
-/*   Updated: 2025/09/07 15:01:35 by msakurai         ###   ########.fr       */
+/*   Updated: 2025/09/07 16:27:53 by msakurai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,7 @@ char	*ft_substr(char *s, unsigned int start, size_t len)
 	dest = ft_calloc(len + 1, sizeof(char));
 	if (!dest)
 		return (NULL);
-	ft_strlcpy(dest, s + start, len + 1);
-	return (dest);
+	return (ft_strlcpy(dest, s + start, len + 1), dest);
 }
 
 void	ft_clear(t_list **list, char **content)
