@@ -6,7 +6,7 @@
 /*   By: msakurai <msakurai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:31:42 by codespace         #+#    #+#             */
-/*   Updated: 2025/09/07 17:43:21 by msakurai         ###   ########.fr       */
+/*   Updated: 2025/09/07 17:46:05 by msakurai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,11 +128,9 @@ char	*get_next_line(int fd)
 
 	list = NULL;
 	if (next_buf)
-	{
 		ft_lstadd_back_and_free(&list, &next_buf);
-		if (!list)
-			return (NULL);
-	}
+	if (next_buf && !list)
+		return (NULL);
 	bytes_read = 1;
 	while (!has_newline(list, bytes_read) && bytes_read > 0)
 	{
