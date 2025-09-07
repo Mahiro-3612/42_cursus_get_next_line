@@ -6,7 +6,7 @@
 /*   By: msakurai <msakurai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:31:42 by codespace         #+#    #+#             */
-/*   Updated: 2025/09/07 16:49:41 by msakurai         ###   ########.fr       */
+/*   Updated: 2025/09/07 17:43:21 by msakurai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ static char	*get_until_newline(t_list **list, char **next_buf)
 	size_t	len;
 
 	if (!list || !*list)
-		return (NULL);
+		return (ft_clear(list, next_buf), NULL);
 	buf = get_buf(list);
 	if (!buf)
 		return (ft_clear(list, next_buf), NULL);
@@ -124,7 +124,6 @@ char	*get_next_line(int fd)
 	static char	*next_buf = NULL;
 	t_list		*list;
 	char		*buf;
-	char		*line;
 	ssize_t		bytes_read;
 
 	list = NULL;
@@ -144,15 +143,8 @@ char	*get_next_line(int fd)
 		if (bytes_read < 0)
 			return (ft_clear(&list, &next_buf), ft_clear(NULL, &buf), NULL);
 		if (bytes_read > 0)
-		{
 			ft_lstadd_back_and_free(&list, &buf);
-			if (!list)
-				return (NULL);
-		}
 		ft_clear(NULL, &buf);
 	}
-	line = get_until_newline(&list, &next_buf);
-	if (!line)
-		ft_clear(&list, &next_buf);
-	return (line);
+	return (get_until_newline(&list, &next_buf));
 }
