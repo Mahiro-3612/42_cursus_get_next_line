@@ -6,13 +6,13 @@
 /*   By: msakurai <msakurai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:31:42 by codespace         #+#    #+#             */
-/*   Updated: 2025/09/07 16:30:40 by msakurai         ###   ########.fr       */
+/*   Updated: 2025/09/07 16:34:35 by msakurai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static void	ft_lstadd_back(t_list **list, char **content)
+static void	ft_lstadd_back_and_free(t_list **list, char **content)
 {
 	t_list	*new;
 	t_list	*last;
@@ -33,6 +33,7 @@ static void	ft_lstadd_back(t_list **list, char **content)
 			last = last->next;
 		last->next = new;
 	}
+	ft_clear(NULL, content);
 }
 
 static size_t	has_newline(t_list *list, ssize_t bytes_read)
@@ -133,8 +134,7 @@ char	*get_next_line(int fd)
 	list = NULL;
 	if (next_buf)
 	{
-		ft_lstadd_back(&list, &next_buf);
-		ft_clear(NULL, &next_buf);
+		ft_lstadd_back_and_free(&list, &next_buf);
 		if (!list)
 			return (NULL);
 	}
@@ -149,9 +149,9 @@ char	*get_next_line(int fd)
 			return (ft_clear(&list, &next_buf), ft_clear(NULL, &buf), NULL);
 		if (bytes_read > 0)
 		{
-			ft_lstadd_back(&list, &buf);
+			ft_lstadd_back_and_free(&list, &buf);
 			if (!list)
-				return (ft_clear(NULL, &buf), NULL);
+				return (NULL);
 		}
 		ft_clear(NULL, &buf);
 	}
