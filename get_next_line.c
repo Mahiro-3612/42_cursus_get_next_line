@@ -6,7 +6,7 @@
 /*   By: msakurai <msakurai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:31:42 by codespace         #+#    #+#             */
-/*   Updated: 2025/09/07 16:42:44 by msakurai         ###   ########.fr       */
+/*   Updated: 2025/09/07 16:49:41 by msakurai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,20 @@ static size_t	has_newline(t_list *list, ssize_t bytes_read)
 {
 	t_list	*current;
 	ssize_t	i;
+	char	c;
 
 	current = list;
 	while (current != NULL)
 	{
 		i = 0;
-		while (current->content[i] && current->content[i] != '\n' && i < bytes_read)
-			i++;
+		while (i < bytes_read)
+		{
+			c = (current->content)[i];
+			if (c && c != '\n')
+				i++;
+			else
+				break ;
+		}
 		if (i < bytes_read && (current->content)[i] == '\n')
 			return (1);
 		current = current->next;
