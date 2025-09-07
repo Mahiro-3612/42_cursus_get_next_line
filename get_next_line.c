@@ -6,7 +6,7 @@
 /*   By: msakurai <msakurai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:31:42 by codespace         #+#    #+#             */
-/*   Updated: 2025/09/07 16:34:35 by msakurai         ###   ########.fr       */
+/*   Updated: 2025/09/07 16:42:44 by msakurai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,6 @@ static char	*get_buf(t_list **list)
 	size_t	len;
 	size_t	offset;
 
-	buf = NULL;
-	if (!list || !*list)
-		return (NULL);
 	current = *list;
 	len = 0;
 	while (current)
@@ -93,8 +90,6 @@ static char	*get_until_newline(t_list **list, char **next_buf)
 	size_t	i;
 	size_t	len;
 
-	buf = NULL;
-	line = NULL;
 	if (!list || !*list)
 		return (NULL);
 	buf = get_buf(list);
@@ -104,22 +99,16 @@ static char	*get_until_newline(t_list **list, char **next_buf)
 	i = 0;
 	while (buf[i] != '\n' && buf[i])
 		i++;
-	if (i == 0 && buf[0] == '\0')
-		line = NULL;
-	else
+	line = NULL;
+	if (i != 0 || buf[0] != '\0')
 		line = ft_substr(buf, 0, i + 1);
 	len = ft_strlen(buf);
 	if (i + 1 < len)
 	{
 		*next_buf = ft_substr(buf, i + 1, len - (i + 1));
 		if (!*next_buf)
-		{
-			free(line);
-			line = NULL;
-		}
+			ft_clear(NULL, &line);
 	}
-	else
-		*next_buf = NULL;
 	return (free(buf), line);
 }
 
