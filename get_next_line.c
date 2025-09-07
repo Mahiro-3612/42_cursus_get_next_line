@@ -6,7 +6,7 @@
 /*   By: msakurai <msakurai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:31:42 by codespace         #+#    #+#             */
-/*   Updated: 2025/09/07 17:46:05 by msakurai         ###   ########.fr       */
+/*   Updated: 2025/09/07 18:34:48 by msakurai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,6 @@ static char	*get_until_newline(t_list **list, char **next_buf)
 	char	*buf;
 	char	*line;
 	size_t	i;
-	size_t	len;
 
 	if (!list || !*list)
 		return (ft_clear(list, next_buf), NULL);
@@ -109,13 +108,14 @@ static char	*get_until_newline(t_list **list, char **next_buf)
 	line = NULL;
 	if (i != 0 || buf[0] != '\0')
 		line = ft_substr(buf, 0, i + 1);
-	len = ft_strlen(buf);
-	if (i + 1 < len)
+	if (i + 1 < ft_strlen(buf))
 	{
-		*next_buf = ft_substr(buf, i + 1, len - (i + 1));
+		*next_buf = ft_substr(buf, i + 1, ft_strlen(buf) - (i + 1));
 		if (!*next_buf)
 			ft_clear(NULL, &line);
 	}
+	if (!line)
+		ft_clear(list, next_buf);
 	return (free(buf), line);
 }
 
