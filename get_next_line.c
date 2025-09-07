@@ -6,13 +6,13 @@
 /*   By: msakurai <msakurai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:31:42 by codespace         #+#    #+#             */
-/*   Updated: 2025/09/07 16:26:44 by msakurai         ###   ########.fr       */
+/*   Updated: 2025/09/07 16:30:40 by msakurai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-void	ft_lstadd_back(t_list **list, char **content)
+static void	ft_lstadd_back(t_list **list, char **content)
 {
 	t_list	*new;
 	t_list	*last;
@@ -35,7 +35,7 @@ void	ft_lstadd_back(t_list **list, char **content)
 	}
 }
 
-size_t	has_newline(t_list *list, ssize_t bytes_read)
+static size_t	has_newline(t_list *list, ssize_t bytes_read)
 {
 	t_list	*current;
 	ssize_t	i;
@@ -85,7 +85,7 @@ static char	*get_buf(t_list **list)
 	return (buf);
 }
 
-char	*get_until_newline(t_list **list, char **next_buf)
+static char	*get_until_newline(t_list **list, char **next_buf)
 {
 	char	*buf;
 	char	*line;
