@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:31:42 by codespace         #+#    #+#             */
-/*   Updated: 2025/09/20 05:28:11 by codespace        ###   ########.fr       */
+/*   Updated: 2025/09/20 05:29:02 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,28 +121,28 @@ static char	*get_until_newline(t_list **list, char **next_buf)
 
 char	*get_next_line(int fd)
 {
-	static char	*next_buf = NULL;
+	static char	*next_buf[FOPEN_MAX];
 	t_list		*list;
 	char		*buf;
 	ssize_t		bytes_read;
 
 	list = NULL;
-	if (next_buf)
-		ft_lstadd_back_and_free(&list, &next_buf);
-	if (next_buf && !list)
+	if (fd >= 0 && fd < FOPEN_MAX && next_buf[fd])
+		ft_lstadd_back_and_free(&list, &next_buf[fd]);
+	if (fd < 0 || fd >= FOPEN_MAX || (next_buf[fd] && !list))
 		return (NULL);
 	bytes_read = 1;
 	while (!has_newline(list, bytes_read) && bytes_read > 0)
 	{
 		buf = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
 		if (!buf)
-			return (ft_clear(&list, &next_buf), NULL);
+			return (ft_clear(&list, &next_buf[fd]), NULL);
 		bytes_read = read(fd, buf, BUFFER_SIZE);
 		if (bytes_read < 0)
-			return (ft_clear(&list, &next_buf), ft_clear(NULL, &buf), NULL);
+			return (ft_clear(&list, &next_buf[fd]), ft_clear(NULL, &buf), NULL);
 		if (bytes_read > 0)
 			ft_lstadd_back_and_free(&list, &buf);
 		ft_clear(NULL, &buf);
 	}
-	return (get_until_newline(&list, &next_buf));
+	return (get_until_newline(&list, &next_buf[fd]));
 }
