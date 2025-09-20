@@ -6,9 +6,16 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:32:16 by codespace         #+#    #+#             */
-/*   Updated: 2025/09/20 05:29:40 by codespace        ###   ########.fr       */
+/*   Updated: 2025/09/20 05:41:05 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#ifndef GET_NEXT_LINE_BONUS_H
+# define GET_NEXT_LINE_BONUS_H
+
+#ifndef BUFFER_SIZE
+# define BUFFER_SIZE 42
+#endif
 
 #include "unistd.h"
 #include <stdlib.h>
@@ -29,3 +36,5 @@ void	ft_strlcpy(char *dest, const char *src, size_t size);
 char	*ft_substr(char *s, unsigned int start, size_t len);
 size_t	ft_strlen(char *s);
 void	ft_clear(t_list **list, char **content);
+
+#endif
