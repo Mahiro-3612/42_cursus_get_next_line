@@ -1,0 +1,85 @@
+
+
+
+
+[mandatory]
+[core]
+
+[crash]
+segfault
+Aborted
+
+不正な文字列が出力される
+
+改行でない文字列とEOFの間に改行のみ(1個または複数個)が来るケース？で、
+この部分の改行群がすべて出力されない(他の部分の改行はすべて正しく出力される)
+
+ft_strlcpy、ft_lstadd_back_and_freeあたりで、無効な書き込み(invalid write)をおこなっている？ぽい
+
+munmap_chunk(): invalid pointer [1] 37888 IOT instruction (core dumped) ./a.out short.txt
+：ダブルフリー系のエラー？
+
+BUFFER_SIZEを変えるたびに挙動が変わる
+
+リストで追加時と再読込時に値が変わってる？
+
+ERROR SUMMARY: 12 errors from 2 contexts (suppressed: 0 from 0)
+
+ft_strlcpy(new->content, *content, ft_strlen(*content) + 1);
+の部分について、
+
+size_t strlcpy(char *dst, const char *src, size_t size);
+The strlcpy() function copies up to size - 1 characters from the NUL-terminated string src to dst, NUL-terminating the result.
+
+ft_strlcpy(new->content, *content, ft_strlen(new->content) + 1);
+
+ft_strlcpy(new->content, *content, BUFFER_SIZE + 1);
+とすれば正常な動作となった
+
+-D BUFFER_SIZE=25, 27
+run.sh: line 6: 146990 Segmentation fault      (core dumped) ./a.out main.c
+
+-D BUFFER_SIZE=28-29
+free(): invalid size
+run.sh: line 6: 146381 Aborted                 (core dumped) ./a.out main.c
+
+-D BUFFER_SIZE=26, 30
+munmap_chunk(): invalid pointer
+run.sh: line 6: 146167 Aborted                 (core dumped) ./a.out main.c
+
+-D BUFFER_SIZE=42
+malloc(): unaligned tcache chunk detected
+run.sh: line 6: 145829 Aborted                 (core dumped) ./a.out main.c
+
+run.sh: line 6: 140270 Segmentation fault      (core dumped) ./a.out main.c
+
+double free or corruption (out)
+run.sh: line 6: 140808 Aborted                 (core dumped) ./a.out main.c
+
+
+[valgrindがおこ]
+Syscall param read(buf) points to unaddressable byte(s)
+ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
+
+以下でreadにBUFFER_SIZEを渡しているが、
+BUFFER_SIZEが負のときにvalgrindで上記のエラーが出る
+bytes_read = read(fd, buf, BUFFER_SIZE);
+
+readの第3引数はsize_tであるため、負の値を渡そうとするとキャスト時にめちゃくちゃデカい値になって
+エラーになるぽい
+ssize_t read(int fd, void *buf, size_t count);
+
+get_next_line()関数の最初のバリデーション処理に加えておくとよさそう
+
+[bonus]
+
+
+[その他]
+課題で指定されたプロトタイプだと呼び出し元にエラーを伝えられないので、
+今後の課題で(部品として)実際に使う場合には戻り値をintに変えたほうが良さそう
+
+norminetteのバージョンが現行のものと異なっていたため変更した
+$ pip install norminette==3.3.55
+
+.gchファイル：プリコンパイル済みヘッダ オブジェクトファイルと異なりビルドに必須ではない
+ビルド効率化のため生成されることがある

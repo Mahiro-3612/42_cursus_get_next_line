@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: msakurai <msakurai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:31:42 by codespace         #+#    #+#             */
-/*   Updated: 2025/09/20 05:45:53 by codespace        ###   ########.fr       */
+/*   Updated: 2025/09/23 17:12:13 by msakurai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include <limits.h>
 
 static void	ft_lstadd_back_and_free(t_list **list, char **content)
 {
@@ -19,10 +20,20 @@ static void	ft_lstadd_back_and_free(t_list **list, char **content)
 
 	if (!content || !*content)
 		return ;
+	// printf("\n\n\nco   :[%p]\n", content); //
+	// printf("*co  :[%s]\n", *content); //
+	// printf("**co :[%c]\n", **content); //
 	new = ft_calloc(1, sizeof(t_list));
 	if (!new)
 		return (ft_clear(list, content));
-	ft_strlcpy(new->content, *content, ft_strlen(*content) + 1);
+//	ft_strlcpy(new->content, *content, ft_strlen(*content) + 1); //ここが原因？
+	// printf("srcsize[%zu]\n", ft_strlen(*content));
+	// printf("dstsize[%zu]\n", ft_strlen(new->content));
+//	ft_strlcpy(new->content, *content, ft_strlen(new->content) + 1); //ここが原因？
+	ft_strlcpy(new->content, *content, BUFFER_SIZE + 1); //ここが原因？
+	// printf("\nco   :[%p]\n", content); //
+	// printf("*co  :[%s]\n", *content); //
+	// printf("**co :[%c]\n", **content); //
 	new->next = NULL;
 	if (!*list)
 		*list = new;
@@ -84,6 +95,9 @@ static char	*get_buf(t_list **list)
 	{
 		len = ft_strlen(current->content);
 		ft_strlcpy(buf + offset, current->content, len + 1);
+		// printf("bu    :[%s]\n", buf); //
+		// printf("bu+of :[%s]\n", buf + offset); //
+		// printf("cu->co:[%s]\n", current->content); //
 		offset += len;
 		current = current->next;
 	}
@@ -98,7 +112,9 @@ static char	*get_until_newline(t_list **list, char **next_buf)
 
 	if (!list || !*list)
 		return (ft_clear(list, next_buf), NULL);
+//	printf("bu    :[%s]\n", buf); //
 	buf = get_buf(list);
+//	printf("\n\nbu    :[%s]\n", buf); //
 	if (!buf)
 		return (ft_clear(list, next_buf), NULL);
 	ft_clear(list, next_buf);
@@ -126,6 +142,8 @@ char	*get_next_line(int fd)
 	char		*buf;
 	ssize_t		bytes_read;
 
+	if (BUFFER_SIZE <= 0 || BUFFER_SIZE > INT_MAX)
+		return (NULL);
 	list = NULL;
 	if (next_buf)
 		ft_lstadd_back_and_free(&list, &next_buf);

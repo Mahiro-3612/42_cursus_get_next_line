@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: msakurai <msakurai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:31:42 by codespace         #+#    #+#             */
-/*   Updated: 2025/09/20 05:44:30 by codespace        ###   ########.fr       */
+/*   Updated: 2025/09/23 17:11:52 by msakurai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
+#include <limits.h>
 
 static void	ft_lstadd_back_and_free(t_list **list, char **content)
 {
@@ -22,7 +23,8 @@ static void	ft_lstadd_back_and_free(t_list **list, char **content)
 	new = ft_calloc(1, sizeof(t_list));
 	if (!new)
 		return (ft_clear(list, content));
-	ft_strlcpy(new->content, *content, ft_strlen(*content) + 1);
+//	ft_strlcpy(new->content, *content, ft_strlen(*content) + 1);
+	ft_strlcpy(new->content, *content, BUFFER_SIZE + 1);
 	new->next = NULL;
 	if (!*list)
 		*list = new;
@@ -126,8 +128,10 @@ char	*get_next_line(int fd)
 	char		*buf;
 	ssize_t		bytes_read;
 
+	if (BUFFER_SIZE <= 0 || BUFFER_SIZE > INT_MAX)
+		return (NULL);
 	list = NULL;
-	if (fd >= 0 && fd < FOPEN_MAX && next_buf[fd])
+		if (fd >= 0 && fd < FOPEN_MAX && next_buf[fd])
 		ft_lstadd_back_and_free(&list, &next_buf[fd]);
 	if (fd < 0 || fd >= FOPEN_MAX || (next_buf[fd] && !list))
 		return (NULL);
