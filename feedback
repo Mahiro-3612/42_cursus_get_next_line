@@ -1,0 +1,56 @@
+
+
+
+
+[mandatory]
+[core]
+-D BUFFER_SIZE=25, 27
+run_reviewee.sh: line 6: 146990 Segmentation fault      (core dumped) ./a.out main_reviewee.c
+
+-D BUFFER_SIZE=28-29
+free(): invalid size
+run_reviewee.sh: line 6: 146381 Aborted                 (core dumped) ./a.out main_reviewee.c
+
+-D BUFFER_SIZE=26, 30
+munmap_chunk(): invalid pointer
+run_reviewee.sh: line 6: 146167 Aborted                 (core dumped) ./a.out main_reviewee.c
+
+-D BUFFER_SIZE=42
+malloc(): unaligned tcache chunk detected
+run_reviewee.sh: line 6: 145829 Aborted                 (core dumped) ./a.out main_reviewee.c
+
+
+line:[#include <stdio.h>
+]
+line:[#include <fcntl.h>
+]
+line:[#include <stdlib.h>
+]
+line:[#include "get_next_line.h"
+]
+run.sh: line 6: 140270 Segmentation fault      (core dumped) ./a.out main.c
+
+
+line:[#include <stdio.h>
+]
+line:[#include <fcntl.h>
+]
+line:[#include <stdlib.h>
+]
+line:[
+]
+line:[#include "get_next_line.h"
+]
+double free or corruption (out)
+run.sh: line 6: 140808 Aborted                 (core dumped) ./a.out main.c
+
+
+
+
+[bonus]
+
+
+
+
+
+[その他]
