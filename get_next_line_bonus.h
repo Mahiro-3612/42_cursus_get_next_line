@@ -6,16 +6,12 @@
 /*   By: msakurai <msakurai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:32:16 by codespace         #+#    #+#             */
-/*   Updated: 2025/09/25 22:27:04 by msakurai         ###   ########.fr       */
+/*   Updated: 2025/09/25 22:49:40 by msakurai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_BONUS_H
 # define GET_NEXT_LINE_BONUS_H
-
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 42
-# endif
 
 # include <unistd.h>
 # include <stdlib.h>
@@ -24,6 +20,15 @@
 # include <fcntl.h>
 # include <stdbool.h>
 # include <limits.h>
+
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 42
+# endif
+
+# if BUFFER_SIZE <= 0 || BUFFER_SIZE > INT_MAX
+#  undef BUFFER_SIZE
+#  define BUFFER_SIZE -1
+# endif
 
 typedef struct s_list
 {
