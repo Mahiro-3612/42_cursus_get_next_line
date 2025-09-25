@@ -1,8 +1,8 @@
 #!/bin/bash
 
-TEST_FILE="short.txt"
+TEST_FILE="empty.txt"
 
-for i in $(seq 1 100)
+for i in $(seq 0 100)
 do
     echo "------------------------------------------"
     echo "BUFFER_SIZE = $i でテスト中..."
