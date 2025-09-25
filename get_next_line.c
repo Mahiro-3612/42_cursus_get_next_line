@@ -6,7 +6,7 @@
 /*   By: msakurai <msakurai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:31:42 by codespace         #+#    #+#             */
-/*   Updated: 2025/09/25 19:56:24 by msakurai         ###   ########.fr       */
+/*   Updated: 2025/09/25 19:59:35 by msakurai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,6 @@ static char	*get_buf(t_list **list)
 	{
 		len = ft_strlen(current->content);
 		ft_strlcpy(buf + offset, current->content, len + 1);
-		// printf("bu    :[%s]\n", buf); //
-		// printf("bu+of :[%s]\n", buf + offset); //
-		// printf("cu->co:[%s]\n", current->content); //
 		offset += len;
 		current = current->next;
 	}
