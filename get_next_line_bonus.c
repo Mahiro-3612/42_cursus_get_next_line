@@ -6,7 +6,7 @@
 /*   By: msakurai <msakurai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:31:42 by codespace         #+#    #+#             */
-/*   Updated: 2025/09/25 20:13:27 by msakurai         ###   ########.fr       */
+/*   Updated: 2025/09/25 20:53:32 by msakurai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,17 +37,17 @@ static void	ft_lstadd_back_and_free(t_list **list, char **content)
 	ft_clear(NULL, content);
 }
 
-static size_t	has_newline(t_list *list, ssize_t bytes_read)
+static size_t	has_newline(t_list *list)
 {
 	t_list	*current;
-	ssize_t	i;
+	size_t	i;
 	char	c;
 
 	current = list;
 	while (current != NULL)
 	{
 		i = 0;
-		while (i < bytes_read)
+		while (i < BUFFER_SIZE)
 		{
 			c = (current->content)[i];
 			if (c && c != '\n')
@@ -55,7 +55,7 @@ static size_t	has_newline(t_list *list, ssize_t bytes_read)
 			else
 				break ;
 		}
-		if (i < bytes_read && (current->content)[i] == '\n')
+		if ((current->content)[i] == '\n')
 			return (1);
 		current = current->next;
 	}
@@ -134,7 +134,7 @@ char	*get_next_line(int fd)
 		|| BUFFER_SIZE <= 0 || BUFFER_SIZE > SIZE_MAX)
 		return (NULL);
 	bytes_read = 1;
-	while (!has_newline(list, bytes_read) && bytes_read > 0)
+	while (!has_newline(list) && bytes_read > 0)
 	{
 		buf = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
 		if (!buf)
