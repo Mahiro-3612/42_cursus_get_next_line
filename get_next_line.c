@@ -6,7 +6,7 @@
 /*   By: msakurai <msakurai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:31:42 by codespace         #+#    #+#             */
-/*   Updated: 2025/09/25 20:52:39 by msakurai         ###   ########.fr       */
+/*   Updated: 2025/09/25 21:26:05 by msakurai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static void	ft_lstadd_back_and_free(t_list **list, char **content)
 static size_t	has_newline(t_list *list)
 {
 	t_list	*current;
-	size_t	i;
+	int		i;
 	char	c;
 
 	current = list;
