@@ -9,7 +9,7 @@ do
     echo "------------------------------------------"
 
     rm -f a.out
-    cc -Wall -Wextra -Werror -D BUFFER_SIZE=$i get_next_line.c get_next_line_utils.c get_next_line.h main.c
+    cc -Wall -Wextra -Werror -D BUFFER_SIZE=$i get_next_line.c get_next_line_utils.c get_next_line.h main_iterate.c
 
     if [ -f "a.out" ]; then
         ./a.out "$TEST_FILE"
