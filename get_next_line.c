@@ -6,7 +6,7 @@
 /*   By: msakurai <msakurai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:31:42 by codespace         #+#    #+#             */
-/*   Updated: 2025/09/25 22:29:19 by msakurai         ###   ########.fr       */
+/*   Updated: 2025/10/04 15:35:00 by msakurai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,28 +121,29 @@ static char	*get_until_newline(t_list **list, char **next_buf)
 
 char	*get_next_line(int fd)
 {
-	static char	*next_buf = NULL;
+	static char	*next_buf[OPEN_MAX];
 	t_list		*list;
 	char		*buf;
 	ssize_t		bytes_read;
 
 	list = NULL;
-	ft_lstadd_back_and_free(&list, &next_buf);
-	if ((next_buf && !list) || BUFFER_SIZE <= 0
-		|| (size_t)BUFFER_SIZE > INT_MAX)
+	if (fd >= 0 && fd < OPEN_MAX)
+		ft_lstadd_back_and_free(&list, &next_buf[fd]);
+	if (fd < 0 || fd >= OPEN_MAX || (next_buf[fd] && !list)
+		|| BUFFER_SIZE <= 0 || (size_t)BUFFER_SIZE > INT_MAX)
 		return (NULL);
 	bytes_read = 1;
 	while (!has_newline(list) && bytes_read > 0)
 	{
 		buf = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
 		if (!buf)
-			return (ft_clear(&list, &next_buf), NULL);
+			return (ft_clear(&list, &next_buf[fd]), NULL);
 		bytes_read = read(fd, buf, BUFFER_SIZE);
 		if (bytes_read < 0)
-			return (ft_clear(&list, &next_buf), ft_clear(NULL, &buf), NULL);
+			return (ft_clear(&list, &next_buf[fd]), ft_clear(NULL, &buf), NULL);
 		if (bytes_read > 0)
 			ft_lstadd_back_and_free(&list, &buf);
 		ft_clear(NULL, &buf);
 	}
-	return (get_until_newline(&list, &next_buf));
+	return (get_until_newline(&list, &next_buf[fd]));
 }
