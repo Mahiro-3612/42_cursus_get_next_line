@@ -7,7 +7,7 @@ CC="cc"
 CFLAGS="-Wall -Wextra -Werror -g -fsanitize=address,undefined"
 SRC_FILES="get_next_line.c get_next_line_utils.c main.c"
 EXEC_NAME="a.out"
-TEST_FILE="newlines.txt"
+TEST_FILE="giant_line.txt"
 OUTPUT_FILE="result.txt"
 
 for (( bs=${MIN_BUFFER}; bs<=${MAX_BUFFER}; bs++ ))
