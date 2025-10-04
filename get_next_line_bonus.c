@@ -6,7 +6,7 @@
 /*   By: msakurai <msakurai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:31:42 by codespace         #+#    #+#             */
-/*   Updated: 2025/09/25 22:29:40 by msakurai         ###   ########.fr       */
+/*   Updated: 2025/10/04 14:14:46 by msakurai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,15 +121,15 @@ static char	*get_until_newline(t_list **list, char **next_buf)
 
 char	*get_next_line(int fd)
 {
-	static char	*next_buf[FOPEN_MAX];
+	static char	*next_buf[OPEN_MAX];
 	t_list		*list;
 	char		*buf;
 	ssize_t		bytes_read;
 
 	list = NULL;
-	if (fd >= 0 && fd < FOPEN_MAX)
+	if (fd >= 0 && fd < OPEN_MAX)
 		ft_lstadd_back_and_free(&list, &next_buf[fd]);
-	if (fd < 0 || fd >= FOPEN_MAX || (next_buf[fd] && !list)
+	if (fd < 0 || fd >= OPEN_MAX || (next_buf[fd] && !list)
 		|| BUFFER_SIZE <= 0 || (size_t)BUFFER_SIZE > INT_MAX)
 		return (NULL);
 	bytes_read = 1;
