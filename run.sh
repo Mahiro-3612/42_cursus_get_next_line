@@ -1,7 +1,7 @@
 #!/bin/bash
 
 CC="cc"
-CFLAGS="-Wall -Wextra -Werror -D BUFFER_SIZE=1000000000"
+CFLAGS="-Wall -Wextra -Werror -g -fsanitize=address,undefined -D BUFFER_SIZE=1"
 SRC_FILES="get_next_line.c get_next_line_utils.c main.c"
 HEADER="get_next_line.h"
 EXEC_NAME="a.out"

@@ -4,10 +4,10 @@ MIN_BUFFER=1
 MAX_BUFFER=100
 
 CC="cc"
-CFLAGS="-Wall -Wextra -Werror"
+CFLAGS="-Wall -Wextra -Werror -g -fsanitize=address,undefined"
 SRC_FILES="get_next_line.c get_next_line_utils.c main.c"
 EXEC_NAME="a.out"
-TEST_FILE="short.txt"
+TEST_FILE="newlines.txt"
 OUTPUT_FILE="result.txt"
 
 for (( bs=${MIN_BUFFER}; bs<=${MAX_BUFFER}; bs++ ))
